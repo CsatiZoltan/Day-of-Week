@@ -1,21 +1,15 @@
 /* Run for the date of today */
 
 #include <stdio.h>
-#include <time.h>
+#include "../util/getDate.h"
 
 int gregorian(int year, int month, int day);
 
 int main(void)
 {
     /* Test the algorithm with the current date */
-    int dayToday, monthToday, yearToday;
-    struct tm *currentTime;
-    time_t timer;
-    time(&timer);
-    currentTime = localtime(&timer);
-    dayToday = currentTime->tm_mday;
-    monthToday = currentTime->tm_mon + 1;
-    yearToday = currentTime->tm_year + 1900;
+    struct tm* currentTime; int dayToday = 0, monthToday = 0, yearToday = 0;
+    currentTime = getDate(dayToday, monthToday, yearToday);
     int realDay = currentTime->tm_wday;
 
     /* Compare it with the calculated date */
