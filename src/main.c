@@ -2,8 +2,7 @@
 
 #include <stdio.h>
 #include "../util/getDate.h"
-
-int gregorian(int year, int month, int day);
+#include "gregorian.h"
 
 int main(void)
 {

@@ -5,6 +5,7 @@
    Output: day of the week (1=Monday, 7=Sunday)
 */
 
+#include "gregorian.h"
 
 int gregorian(int year, int month, int day)
 {
