@@ -1,16 +1,17 @@
 #include "../src/gregorian.h"
 #include "zellergui.h"
 #include <QApplication>
-
-
-
+#include <QIcon>
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     ZellerGUI w;
+    w.setWindowIcon(QIcon(":/CalendarIcon.png"));
+    w.setWindowTitle("Day of year");
     w.show();
-    int result = gregorian(2016,8,21);
+
     return a.exec();
 }
