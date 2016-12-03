@@ -3,19 +3,31 @@
 #include "../src/gregorian.h"
 
 #include <QMessageBox>
+#include <QString>
 #include "zellergui.h"
 #include "ui_zellergui.h"
 
+
 // Local function declarations
-std::string helpText();
+QString helpText();
 int checkInput(int input, int lowerBound, int upperBound);
 
 // Global variables
 const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-const std::string days[7] = {"Monday", "Tuesday", "Wednesday", "Thursday", \
-                             "Friday", "Saturday", "Sunday"};
+const char * const days[7] = {
+    QT_TRANSLATE_NOOP("Weekdays", "Monday"),
+    QT_TRANSLATE_NOOP("Weekdays", "Tuesday"),
+    QT_TRANSLATE_NOOP("Weekdays", "Wednesday"),
+    QT_TRANSLATE_NOOP("Weekdays", "Thursday"),
+    QT_TRANSLATE_NOOP("Weekdays", "Friday"),
+    QT_TRANSLATE_NOOP("Weekdays", "Saturday"),
+    QT_TRANSLATE_NOOP("Weekdays", "Sunday")
+}; // idea is taken from https://forum.qt.io/topic/73971/translation-does-not-work-when-the-text-of-qlineedit-is-modified
 int lastWorkingCalendar = 0;
 
+
+
+// Set up the user interface
 ZellerGUI::ZellerGUI(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ZellerGUI)
@@ -28,10 +40,14 @@ ZellerGUI::~ZellerGUI()
     delete ui;
 }
 
+
+
+// Implement callback functions
 void ZellerGUI::on_helpPushButton_clicked()
 {
-    QMessageBox::information(this, "Help", QString::fromStdString(helpText()));
+    QMessageBox::information(this, tr("Help"), helpText());
 }
+
 
 void ZellerGUI::on_yearEdit_editingFinished()
 {
@@ -44,8 +60,10 @@ void ZellerGUI::on_yearEdit_editingFinished()
     int calculatedDay = gregorian(ui->yearEdit->text().toInt(), \
                                   ui->monthEdit->text().toInt(), \
                                   ui->dayEdit->text().toInt());
-    ui->resultEdit->setText(QString::fromStdString(days[calculatedDay - 1]));
+    QString day = QCoreApplication::translate("Weekdays", days[calculatedDay - 1]);
+    ui->resultEdit->setText(day);
 }
+
 
 void ZellerGUI::on_monthEdit_editingFinished()
 {
@@ -64,8 +82,10 @@ void ZellerGUI::on_monthEdit_editingFinished()
     int calculatedDay = gregorian(ui->yearEdit->text().toInt(), \
                                   ui->monthEdit->text().toInt(), \
                                   ui->dayEdit->text().toInt());
-    ui->resultEdit->setText(QString::fromStdString(days[calculatedDay - 1]));
+    QString day = QCoreApplication::translate("Weekdays", days[calculatedDay - 1]);
+    ui->resultEdit->setText(day);
 }
+
 
 void ZellerGUI::on_dayEdit_editingFinished()
 {
@@ -79,25 +99,39 @@ void ZellerGUI::on_dayEdit_editingFinished()
     int calculatedDay = gregorian(ui->yearEdit->text().toInt(), \
                                   ui->monthEdit->text().toInt(), \
                                   ui->dayEdit->text().toInt());
-    ui->resultEdit->setText(QString::fromStdString(days[calculatedDay - 1]));
+    QString day = QCoreApplication::translate("Weekdays", days[calculatedDay - 1]);
+    ui->resultEdit->setText(day);
 }
 
 
-// TODO use char* output in a new .c file to be compatible with the command line
-std::string helpText()
+QString helpText()
 {
-    std::string help;
-    help = "Usage: select the date (year, month and day) you wish\n" \
+    QString help;
+    help = QCoreApplication::tr("Usage: select the date (year, month and day) you wish\n" \
            " to know on which day of the week it was (or will be)\n" \
            " according to the Gregorian or the Julian calendar that\n" \
            " can be selected on the right. The typed data can be \n" \
            " accepted by pressing Enter or clicking into another field.\n" \
            "\n\n" \
            "Created by\n" \
-           "Zoltan Csati" ;
+           "Zoltan Csati");
     return help;
 }
 
+
+void ZellerGUI::on_calendarCombo_currentIndexChanged(int index)
+{
+    if (index == 1) // Julian calendar
+    {
+        // Throw warning about lack of implementation
+        QMessageBox::information(this, tr("Info"), tr("Calendar not yet implemented."));
+        // Change the dropdown menu back to its previous state
+        ui->calendarCombo->setCurrentIndex(lastWorkingCalendar);
+    }
+}
+
+
+// Input checking used in several callback functions
 int checkInput(int input, int lowerBound, int upperBound)
 {
     int corrected = input;
@@ -107,15 +141,4 @@ int checkInput(int input, int lowerBound, int upperBound)
         corrected = upperBound;
 
     return corrected;
-}
-
-void ZellerGUI::on_calendarCombo_currentIndexChanged(int index)
-{
-    if (index == 1) // Julian calendar
-    {
-        // Throw warning about lack of implementation
-        QMessageBox::information(this, "Info", "Calendar not yet implemented.");
-        // Change the dropdown menu back to its previous state
-        ui->calendarCombo->setCurrentIndex(lastWorkingCalendar);
-    }
 }
