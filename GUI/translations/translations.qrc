@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>hun.qm</file>
+    </qresource>
+</RCC>
