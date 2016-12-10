@@ -10,7 +10,21 @@ For the sake of modularity, the command line and the GUI is fully detached from 
 
 ## Usage
 
+### Command line
+
 Coming soon...
+
+### GUI
+
+After installation, open the application. A language selector welcomes you.
+
+![Language selection menu](/GUI/screenshots/LanguageSelection.PNG "Language selection menu")
+
+After selecting your language, the main window appears:
+
+![Main window](/GUI/screenshots/MainWindow.PNG "Main window")
+
+The usage is then straightforward, but in case you get stuck, hover the mouse over an entry to get a concise help or click on the *Help* button for more a detailed guide.
 
 [//]: # (Tested on Windows XP, 7, 8.1 and Linux Fedora 24, Ubuntu 14.04 LTS, Ubuntu 16.04 LTS)
 
